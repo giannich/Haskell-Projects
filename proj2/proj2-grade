@@ -1,0 +1,23 @@
+/* proj2 guideline */
+/* MPCS 51400, Fall 2017 */
+
+/* === Evaluation === */
+
+/* intersperse       5/5   */
+/* weave             5/5   */
+/* pairSwap          10/10  */
+/* reverse'          10/10  */ 
+/* zip’     	     10/10  */
+/* unzip'     	     10/10  */
+/* splitFilter       10/10  */
+/* findPoint         10/10  */
+/* isValid           10/10  */
+/* findRightTris     20/20  */
+
+
+/* _TOTAL-SCORE_    99/100 */
+
+/* graded by Alex Smith */
+
+You were not supposed to import modules besides prelude, so you have lost a point.
+
