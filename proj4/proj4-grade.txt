@@ -1,0 +1,21 @@
+/* proj4 guideline */
+/* MPCS 51400, Fall 2017 */
+
+/* === Evaluation === */
+
+== Basic Functions ==
+/* newDeck 		 5/5   */ 
+/* draw                  3/3   */
+/* turnHuman		 25/25  */ 
+/* isHandOrGameOver	 7/7  */
+
+== Strategies == 
+/* turnCom 		 50/50  */
+/* ReadMe.txt 		 10/10   */
+
+
+
+/* _TOTAL-SCORE_    100/100 */
+
+/* graded by Alex Smith */
+
