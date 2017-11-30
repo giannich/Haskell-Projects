@@ -1,0 +1,22 @@
+/* proj5 guideline */
+/* MPCS 51400, Fall 2017 */
+
+/* === Evaluation ===          */
+/* Error Handling                         5/10 */ 
+/* Geometric Data Parsing                 4/15 */
+/* Election  Data Parsing                 4/15 */
+/* Window Rendering                       10/20 */
+/* Implemented the options (-w, -rgb, -p) 5/10 */ 
+
+
+/* === Style === */
+/* style (modularity, naming conventions, etc.) 30/30 */
+
+
+/* _TOTAL-SCORE_    58/100 */
+
+/* graded by Alex Smith */
+
+gave this error: Parsing.hs:(34,1)-(39,28): Non-exhaustive patterns in function parseSubregions' when calling on every file that I tried.
+
+I was never able to produce a map using any of the possible commands, and always gave the above error.
