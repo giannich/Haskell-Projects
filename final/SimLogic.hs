@@ -206,5 +206,3 @@ attendOpenHouse' ss compState (mLoc, minSim) x =
     t = thresh ss
     simScore = checkSimilarity ss compState x (+1)
 
-
-

@@ -21,34 +21,47 @@ parseGrid (rowStr:colStr:rest) mr = initSSet
   where
     rowNum = parseInt rowStr
     colNum = parseInt colStr
-    emptyState = initSimState (rowNum, colNum) 1 0.5
-    filledState = parseRows rest (0, 0) emptyState
+    emptyState = initSimState (rowNum, colNum) 2 0.5
+    (filledState, sqCount) = parseRows rest (0, 0) (emptyState, (0, 0, 0, 0))
+    (rPer, bPer, oPer, pPer) = toPercent sqCount
 
-    argsPackage = ArgsPackage{maxRounds=mr, rows=rowNum, cols=colNum, neighRadius=1, threshold=0.5, emptyPer=0.2, parksPer=0.1, bluePer=0.5, redPer=0.5}
+    argsPackage = ArgsPackage{maxRounds=mr, rows=rowNum, cols=colNum, neighRadius=2, threshold=0.5, emptyPer=oPer, parksPer=pPer, bluePer=bPer, redPer=rPer}
     initSSet = SimSettings{argsPack=argsPackage, simState=filledState, roundNum=0, stopped=True, stepDelay=1.0}
 
 {- Goes through each row -}
-parseRows :: [String] -> Location -> SimState -> SimState
+parseRows :: [String] -> Location -> (SimState, (Int, Int, Int, Int)) -> (SimState, (Int, Int, Int, Int))
 parseRows [] _ oldSS = oldSS
 parseRows (row:rows) (rowPtr, colPtr) oldSS = parseRows rows (rowPtr+1, colPtr) newSS
   where
     newSS = parseCols (words row) (rowPtr, colPtr) oldSS
 
 {- Goes through each column -}
-parseCols :: [String] -> Location -> SimState -> SimState
+parseCols :: [String] -> Location -> (SimState, (Int, Int, Int, Int)) -> (SimState, (Int, Int, Int, Int))
 parseCols [] _ oldSS = oldSS
-parseCols (house:houses) (rowPtr, colPtr) oldSS = parseCols houses (rowPtr, colPtr+1) newSS
+parseCols (house:houses) (rowPtr, colPtr) (oldSS, oldCount) = parseCols houses (rowPtr, colPtr+1) (newSS, newCount)
   where
-    houseState = parseHouse house
+    (houseState, newCount) = parseHouse house oldCount
     newSS = if houseState /= O then moveIn (rowPtr, colPtr) houseState oldSS else oldSS
 
 {- Parses a string to a state -}
-parseHouse :: String -> State
-parseHouse "R" = (R Satisfied)
-parseHouse "B" = (B Satisfied)
-parseHouse "O" = O
-parseHouse "P" = P
-parseHouse _ = error "There is an undefined state in the grid! Now exiting the simulation..."
+parseHouse :: String -> (Int, Int, Int, Int) -> (State, (Int, Int, Int, Int))
+parseHouse "R" (r, b, o, p) = (R Satisfied, (r+1, b, o, p))
+parseHouse "B" (r, b, o, p) = (B Satisfied, (r, b+1, o, p))
+parseHouse "O" (r, b, o, p) = (O, (r, b, o+1, p))
+parseHouse "P" (r, b, o, p) = (P, (r, b, o, p+1))
+parseHouse _ _ = error "There is an undefined state in the grid! Now exiting the simulation..."
+
+toPercent :: (Int, Int, Int, Int) -> (Float, Float, Float, Float)
+toPercent (r, b, o, p) = (rPer, bPer, oPer, pPer)
+  where
+    total = r + b + o + p
+    noParks = r + b + o
+    noEmpty = r + b
+
+    pPer = (fromIntegral p) / (fromIntegral total)
+    oPer = (fromIntegral o) / (fromIntegral noParks)
+    bPer = (fromIntegral b) / (fromIntegral noEmpty)
+    rPer = (fromIntegral r) / (fromIntegral noEmpty)
 
 -------------------
 -- SIMSTATE INIT --

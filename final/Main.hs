@@ -19,10 +19,6 @@ import DataTypes
 -- SETTINGS --
 --------------
 
-{- Size of actual window -}
-windowWidth = 1024
-windowHeight = 768
-
 {- Min and Max Parameters -}
 thresholdRange = (0.0, 1.0)
 radiusRange = (1, 5)
@@ -31,6 +27,20 @@ redBlueRange = (0.0, 1.0)
 emptyRange = (0.0, 1.0)
 parksRange = (0.0, 1.0)
 sizeRange = (10, 50)
+
+{- Single Step Values -}
+thresholdStep = 0.05
+radiusStep = 1
+delayStep = 0.100
+redBlueStep = 0.05
+emptyStep = 0.05
+parkStep = 0.05
+smallSizeStep = 1
+bigSizeStep = 5
+
+{- Size of actual window -}
+windowWidth = 1024
+windowHeight = 768
 
 {- Window Display -}
 window :: Display
@@ -132,35 +142,35 @@ eventHandler (EventKey (SpecialKey KeyRight) Up _ _) sSet@(SimSettings _ ss roun
 -- Exit
 eventHandler (EventKey (SpecialKey KeyEsc) Up _ _) _ = error $ "Thanks for playing with Schelling!"
 
--- Change Satisfaction Threshold
-eventHandler (EventKey (Game.Char 'q') Up _ _) sSet = changeThresh (-0.05) sSet
-eventHandler (EventKey (Game.Char 'w') Up _ _) sSet = changeThresh (0.05) sSet
+-- Change Similarity Threshold
+eventHandler (EventKey (Game.Char 'q') Up _ _) sSet = changeThresh (-thresholdStep) sSet
+eventHandler (EventKey (Game.Char 'w') Up _ _) sSet = changeThresh (thresholdStep) sSet
 
 -- Change Neighborhood Radius Threshold
-eventHandler (EventKey (Game.Char 'a') Up _ _) sSet = changeRad (-1) sSet
-eventHandler (EventKey (Game.Char 's') Up _ _) sSet = changeRad (1) sSet
+eventHandler (EventKey (Game.Char 'a') Up _ _) sSet = changeRad (-radiusStep) sSet
+eventHandler (EventKey (Game.Char 's') Up _ _) sSet = changeRad (radiusStep) sSet
 
 -- Change Time Delay
-eventHandler (EventKey (Game.Char 'z') Up _ _) sSet = changeDelay (-0.1) sSet
-eventHandler (EventKey (Game.Char 'x') Up _ _) sSet = changeDelay (0.1) sSet
+eventHandler (EventKey (Game.Char 'z') Up _ _) sSet = changeDelay (-delayStep) sSet
+eventHandler (EventKey (Game.Char 'x') Up _ _) sSet = changeDelay (delayStep) sSet
 
 -- Change R/B Percentages
-eventHandler (EventKey (Game.Char 'r') Up _ _) sSet = changeRB ((0.05), (-0.05)) sSet
-eventHandler (EventKey (Game.Char 't') Up _ _) sSet = changeRB ((-0.05), (0.05)) sSet
+eventHandler (EventKey (Game.Char 'r') Up _ _) sSet = changeRB ((redBlueStep), (-redBlueStep)) sSet
+eventHandler (EventKey (Game.Char 't') Up _ _) sSet = changeRB ((-redBlueStep), (redBlueStep)) sSet
 
 -- Change Empty Percentages
-eventHandler (EventKey (Game.Char 'f') Up _ _) sSet = changeEmpty (-0.05) sSet
-eventHandler (EventKey (Game.Char 'g') Up _ _) sSet = changeEmpty (0.05) sSet
+eventHandler (EventKey (Game.Char 'f') Up _ _) sSet = changeEmpty (-emptyStep) sSet
+eventHandler (EventKey (Game.Char 'g') Up _ _) sSet = changeEmpty (emptyStep) sSet
 
 -- Change Time Delay
-eventHandler (EventKey (Game.Char 'v') Up _ _) sSet = changeParks (-0.05) sSet
-eventHandler (EventKey (Game.Char 'b') Up _ _) sSet = changeParks (0.05) sSet
+eventHandler (EventKey (Game.Char 'v') Up _ _) sSet = changeParks (-parkStep) sSet
+eventHandler (EventKey (Game.Char 'b') Up _ _) sSet = changeParks (parkStep) sSet
 
 -- Change Size
-eventHandler (EventKey (Game.Char 'u') Up _ _) sSet = changeSize (-5) sSet
-eventHandler (EventKey (Game.Char 'i') Up _ _) sSet = changeSize (-1) sSet
-eventHandler (EventKey (Game.Char 'o') Up _ _) sSet = changeSize (1) sSet
-eventHandler (EventKey (Game.Char 'p') Up _ _) sSet = changeSize (5) sSet
+eventHandler (EventKey (Game.Char 'u') Up _ _) sSet = changeSize (-bigSizeStep) sSet
+eventHandler (EventKey (Game.Char 'i') Up _ _) sSet = changeSize (-smallSizeStep) sSet
+eventHandler (EventKey (Game.Char 'o') Up _ _) sSet = changeSize (smallSizeStep) sSet
+eventHandler (EventKey (Game.Char 'p') Up _ _) sSet = changeSize (bigSizeStep) sSet
 
 -- Invalid Input
 eventHandler _ sSet = return sSet

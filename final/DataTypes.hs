@@ -66,16 +66,6 @@ data Satisfaction = Satisfied | Unsatisfied deriving (Eq, Show)
 {- Describes the list of open houses -}
 data OpenHouse a = OpenHouse [a] deriving (Eq)
 
-{- Useful for using foldMap on OpenHouse -}
-data BestOpen = BestOpen {getLoc :: (Maybe (Location), Float)} deriving (Eq, Show)
-
--- TODO: Implement
-instance Monoid BestOpen where
-  mempty = BestOpen (Nothing, 2.0)
-  mappend (BestOpen (Just loc, a)) (BestOpen (Just best, b)) = BestOpen (Just best, b)
-  mappend mempty (BestOpen (Just best, b)) = BestOpen (Just best, b)
-  mappend (BestOpen (Just best, b)) mempty = BestOpen (Just best, b)
-
 -- SimState
 
 instance Show SimState where
